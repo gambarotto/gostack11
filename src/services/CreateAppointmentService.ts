@@ -1,5 +1,6 @@
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
+import AppError from '../errors/AppError';
 import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/appointmentsRepository';
 
@@ -16,7 +17,7 @@ class CreateAppointmentService {
       appointmentsDate,
     );
     if (findAppointmentInSameDate) {
-      throw Error('This appointment is already booked');
+      throw new AppError('This appointment is already booked', 400);
     }
     // cria apenas uma instancia de um objeto que será criado no bd, por isso não precisa do await
     const appointment = appointmentsRepository.create({
