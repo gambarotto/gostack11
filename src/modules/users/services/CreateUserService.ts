@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs';
 import { getRepository } from 'typeorm';
-import AppError from '../../../shared/errors/AppError';
-import User from '../infra/typeorm/entities/Users';
+import AppError from '@shared/errors/AppError';
+import User from '@modules/users/infra/typeorm/entities/Users';
 
 interface Request {
   name: string;
