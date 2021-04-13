@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import 'reflect-metadata';
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
@@ -21,6 +22,7 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
       message: err.message,
     });
   }
+
   console.error(err);
   return response.status(500).json({
     status: 'error',
