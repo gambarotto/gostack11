@@ -18,6 +18,8 @@ class ShowProfileService {
     if (!user) {
       throw new AppError('User not found', 400);
     }
+    // @ts-expect-error Deleta password apenas para retorno pro frontend
+    delete user.password;
     return user;
   }
 }
