@@ -1,5 +1,4 @@
 import { v4 } from 'uuid';
-
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
@@ -7,7 +6,6 @@ import IFindAllMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllMon
 import { isEqual, getMonth, getYear, getDate } from 'date-fns';
 import IFindAllDayFromProviderDTO from '@modules/appointments/dtos/IFindAllDayFromProviderDTO';
 
-// @EntityRepository(Appointment)
 class FakeAppointmentsRepository implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
 
@@ -20,11 +18,12 @@ class FakeAppointmentsRepository implements IAppointmentsRepository {
 
   public async create({
     provider_id,
+    user_id,
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment();
 
-    Object.assign(appointment, { id: v4(), date, provider_id });
+    Object.assign(appointment, { id: v4(), date, provider_id, user_id });
 
     this.appointments.push(appointment);
     return appointment;
