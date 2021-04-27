@@ -22,14 +22,13 @@ class CreateAppointmentService {
     user_id,
   }: Request): Promise<Appointment> {
     const appointmentsDate = startOfHour(date);
-
+    // validations
     if (isBefore(appointmentsDate, Date.now())) {
       throw new AppError("You can't create an appointment on a past date.");
     }
     if (user_id === provider_id) {
       throw new AppError("You can't create an appointment with yourself");
     }
-
     if (getHours(appointmentsDate) < 8 || getHours(appointmentsDate) > 17) {
       throw new AppError(
         'You can only create appointments between 8am and 5pm',
