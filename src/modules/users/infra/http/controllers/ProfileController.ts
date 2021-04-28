@@ -1,5 +1,6 @@
 import ShowProfileService from '@modules/users/services/ShowProfileService';
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -10,7 +11,7 @@ class ProfileController {
     const showProfile = container.resolve(ShowProfileService);
     const user = await showProfile.execute({ user_id });
 
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -26,9 +27,7 @@ class ProfileController {
       old_password,
       password,
     });
-    // @ts-expect-error Deleta password apenas para retorno pro frontend
-    delete user.password;
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 }
 export default ProfileController;

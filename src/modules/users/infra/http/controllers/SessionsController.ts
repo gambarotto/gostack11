@@ -1,3 +1,4 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import AuthenticateUserService from '../../../services/AuthenticateUserService';
@@ -7,9 +8,8 @@ class SessionsController {
     const { email, password } = request.body;
     const authenticateUser = container.resolve(AuthenticateUserService);
     const { user, token } = await authenticateUser.execute({ email, password });
-    // @ts-expect-error Deleta password apenas para retorno pro frontend
-    delete user.password;
-    return response.json({ user, token });
+
+    return response.json({ user: classToClass(user), token });
   }
 }
 export default SessionsController;

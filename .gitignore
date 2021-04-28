@@ -6,3 +6,6 @@ tmp/*
 !tmp/.gitkeep
 temp/
 src/config/auth.ts
+
+ormconfig.json
+.env

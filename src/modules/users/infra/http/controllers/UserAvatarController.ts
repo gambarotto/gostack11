@@ -1,3 +1,4 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import UpdateUserAvatarService from '../../../services/UpdateUserAvatarService';
@@ -9,9 +10,7 @@ class UserAvatarController {
       user_id: request.user.id,
       avatarFilename: request.file.filename,
     });
-    // @ts-expect-error Deleta password apenas para retorno pro frontend
-    delete user.password;
-    return response.status(200).json(user);
+    return response.status(200).json(classToClass(user));
   }
 }
 export default UserAvatarController;
