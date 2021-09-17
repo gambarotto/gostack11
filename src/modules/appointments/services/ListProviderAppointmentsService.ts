@@ -1,4 +1,5 @@
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { classToClass } from 'class-transformer';
 import { injectable, inject } from 'tsyringe';
 import Appointment from '../infra/typeorm/entities/Appointment';
 
@@ -31,6 +32,8 @@ class ListProviderAppointmentsService {
     let appointments = await this.cacheProvider.recover<Appointment[]>(
       cacheKey,
     );
+
+    // let appointments = null;
     if (!appointments) {
       appointments = await this.appointmentsRepository.findAllInDayFromProvider(
         {
@@ -40,8 +43,7 @@ class ListProviderAppointmentsService {
           year,
         },
       );
-      await this.cacheProvider.save(cacheKey, appointments);
-      console.log('Buscou do banco');
+      await this.cacheProvider.save(cacheKey, classToClass(appointments));
     }
 
     return appointments;

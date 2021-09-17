@@ -10,6 +10,10 @@ export default class RedisCacheProvider implements ICacheProvider {
   }
 
   public async save(key: string, value: string): Promise<void> {
+    if (process.env.APP_ENVIRONMENT === 'dev') {
+      await this.client.flushall();
+    }
+
     await this.client.set(key, JSON.stringify(value));
   }
 
@@ -34,5 +38,9 @@ export default class RedisCacheProvider implements ICacheProvider {
     });
 
     await pipeline.exec();
+  }
+
+  public async clearAllKeys(): Promise<void> {
+    await this.client.flushall();
   }
 }

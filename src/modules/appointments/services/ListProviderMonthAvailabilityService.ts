@@ -1,4 +1,4 @@
-import { getDaysInMonth, getDate } from 'date-fns';
+import { getDaysInMonth, getDate, isAfter } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
@@ -41,6 +41,7 @@ class ListProviderMonthAvailabilityService {
     );
     // Percorre o array criado
     const availables = eachDayArray.map(day => {
+      const compareDate = new Date(year, month - 1, day, 23, 59, 59);
       // Add na variavel 'appointmentsInDay' os agendamentos do dia correspondente
       const appointmentsInDay = monthAppointments.filter(appointment => {
         return getDate(appointment.date) === day;
@@ -48,10 +49,12 @@ class ListProviderMonthAvailabilityService {
       // Retorna um obj no formato esperado
       return {
         day,
+        // verifica se o dia corrente é depois do dia da consulta
         // como os agendamentos só serão permitidos das 08 às 17,
         // somente 10 agendamentos serão possíveis por dia,
         // por isso 'appointmentsInDay.length < 10'
-        available: appointmentsInDay.length < 10,
+        available:
+          isAfter(compareDate, new Date()) && appointmentsInDay.length < 10,
       };
     });
 
